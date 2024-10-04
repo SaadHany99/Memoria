@@ -1,3 +1,8 @@
+using Medical_History.Data;
+using Medical_History.Models;
+using Medical_History.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 namespace Medical_History
 {
     public class Program
@@ -8,6 +13,16 @@ namespace Medical_History
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(op =>
+            op.UseSqlServer(builder.Configuration.GetConnectionString("constr")));
+
+            //Registering Repository in IOC Container.
+
+            builder.Services.AddScoped<IRepository<Patient>,Repository<Patient>>();
+            //builder.Services.AddScoped<IRepository<Doctor>,Repository<Doctor>>();
+            //builder.Services.AddScoped<IRepository<Hospital>,Repository<Hospital>>();
+            //builder.Services.AddScoped<IRepository<MedicalRecord>,Repository<MedicalRecord>>();
 
             var app = builder.Build();
 
